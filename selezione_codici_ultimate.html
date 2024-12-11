@@ -17,12 +17,13 @@
         h1 {
             color: #388e3c;
             position: relative;
-            bottom: 185px;
+            bottom: 150px;
 
         }
+
         .dropdown-container {
             display: flex;
-            gap: 200px;  /* Distanza tra i dropdown */
+            gap: 50px;  /* Distanza tra i dropdown */
             margin-bottom: 150px;
         }
 
@@ -30,7 +31,7 @@
             padding: 10px;
             font-size: 16px;
         }
-
+        
         .submit-container {
             position: absolute;
             bottom:20px;
@@ -54,17 +55,20 @@
 </head>
 <body>
     <h1>Seleziona i codici</h1>
+
+
     <div class="dropdown-container">
         <!-- Dropdown 1: Codice Pressa -->
-        <label for="codice-1">Pressa:</label><br>
+        <p0>Pressa</p0>
         <select name="codice_pressa" id="codice_pressa">
-        
+            
             {% for item in data_pressa %}
                 <option value="{{ item[0] }}">{{ item[0] }}</option>
             {% endfor %}
         </select>
 
         <!-- Dropdown 2: Tag Stampo -->
+        <p1>Tag_stampo</p1>
         <select name="tag_stampo" id="tag_stampo">
             {% for item in data_tag_stampo %}
                 <option value="{{ item[0] }}">{{ item[0] }}</option>
@@ -72,6 +76,7 @@
         </select>
 
         <!-- Dropdown 3: Part Number -->
+        <p2>Part_number</p2>
         <select name="part_number" id="part_number">
             {% for item in data_part_number %}
                 <option value="{{ item[0] }}">{{ item[0] }}</option>
@@ -79,6 +84,7 @@
         </select>
 
         <!-- Dropdown 4: Ordine -->
+        <p3>Ordine</p3>
         <select name="ordine" id="ordine">
             {% for item in data_ordine %}
                 <option value="{{ item[0] }}">{{ item[0] }}</option>
