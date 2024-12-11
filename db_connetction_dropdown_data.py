@@ -4,7 +4,7 @@
 
 def get_data_from_db(query):
     # Connessione al database
-    conn = sqlite3.connect('nome_del_tuo_database.db')
+    conn = sqlite3.connect('MTD.db')
     cursor = conn.cursor()
     cursor.execute(query)
     results = cursor.fetchall()  # Recupera tutti i dati dalla query
