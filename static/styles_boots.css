@@ -1,0 +1,62 @@
+/* Stile personalizzato per l'intestazione */
+.custom-heading {
+    font-size: 3rem;
+    color: #007bff; /* Colore principale di Bootstrap */
+    font-family: 'Arial', sans-serif;
+    text-transform: uppercase;
+}
+
+/* Stile personalizzato per il paragrafo */
+.custom-paragraph {
+    font-size: 1.25rem;
+    color: #6c757d; /* Colore testo secondario di Bootstrap */
+    line-height: 1.6;
+}
+
+/* Personalizzazione per le card */
+.custom-card .card {
+    border: 2px solid #007bff; /* Aggiungi un bordo blu */
+    border-radius: 10px; /* Angoli arrotondati */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card .card:hover {
+    transform: scale(1.05); /* Effetto zoom */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Aggiungi un'ombra */
+}
+
+/* Personalizzazione per i pulsanti */
+.floating-button {
+    position: fixed;
+    bottom: 20px; /* Distanza dal bordo inferiore */
+    right: 20px; /* Distanza dal bordo destro */
+    width: 60px; /* Larghezza del pulsante */
+    height: 60px; /* Altezza del pulsante */
+    border-radius: 50%; /* Pulsante circolare */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px; /* Dimensione del simbolo */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Ombra */
+    transition: all 0.3s ease-in-out; /* Transizione */
+}
+
+.btn-primary:hover {
+    background-color: #004085; /* Cambia colore al passaggio del mouse */
+    transform: scale(1.1); /* Effetto zoom al passaggio del mouse */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Colore personalizzato */
+    border-color: #5a6268;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #4e555b;
+}
+.form-row {
+    display: flex;
+    gap: 20px; /* Spaziatura tra i campi */
+    margin-bottom: 20px; /* Spaziatura tra le righe */
+}

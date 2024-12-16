@@ -7,7 +7,7 @@ import sqlite3
 
 def get_data_from_db(query):
     # Connessione al database
-    conn = sqlite3.connect('Datasets/MTD.db')
+    conn = sqlite3.connect('DatabaseSql/MTD.db')
     cursor = conn.cursor()
     cursor.execute(query)
     results = cursor.fetchall()  # Recupera tutti i dati dalla query
@@ -25,12 +25,12 @@ def index():
     import_tag_stampo = get_data_from_db(query_tag_stampo)
     import_part_number = get_data_from_db(query_part_number)
     import_ordine = get_data_from_db(query_ordine)
-    return render_template('selezione_codici.html', data_pressa=import_pressa, data_tag_stampo=import_tag_stampo, data_part_number=import_part_number, data_ordine=import_ordine)
+    return render_template('selezione_codici_definitivo.html', data_pressa=import_pressa, data_tag_stampo=import_tag_stampo, data_part_number=import_part_number, data_ordine=import_ordine)
 
 app = Flask(__name__)
 @app.route('/')
 def graph():
 
-    return  render_template("selezione_codici.html")
+    return  render_template("selezione_codici_definitivo.html")
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)
