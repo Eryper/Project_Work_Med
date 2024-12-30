@@ -12,19 +12,19 @@
 
         <form method="POST" action="{{ url_for('submit_limiti') }}">
             <!-- Passa i 4 codici come hidden inputs -->
-            <input type="hidden" name="pressa" value="{{ pressa }}">
-            <input type="hidden" name="tag_stampo" value="{{ tag_stampo }}">
-            <input type="hidden" name="part_number" value="{{ part_number }}">
-            <input type="hidden" name="ordine" value="{{ ordine }}">
+            <input type="hidden" name="Pressa" value="{{ pressa }}">
+            <input type="hidden" name="Tag_stampo" value="{{ tag_stampo }}">
+            <input type="hidden" name="Part_number" value="{{ part_number }}">
+            <input type="hidden" name="Ordine" value="{{ ordine }}">
 
             {% for parametro in parametri %}
                 <div class="form-group">
                     <h5>{{ parametro[0] }}</h5>
-                    <label for="limite_inf_{{ parametro[0] }}">Limite Inferiore</label>
-                    <input type="number" name="limite_inf_{{ parametro[0] }}" class="form-control" required>
+                    <label for="Limite_inf{{ parametro[0] }}">Limite Inferiore</label>
+                    <input type="number" name="Limite_inf{{ parametro[0] }}" class="form-control" required>
 
-                    <label for="limite_sup_{{ parametro[0] }}">Limite Superiore</label>
-                    <input type="number" name="limite_sup_{{ parametro[0] }}" class="form-control" required>
+                    <label for="Limite_sup{{ parametro[0] }}">Limite Superiore</label>
+                    <input type="number" name="Limite_sup{{ parametro[0] }}" class="form-control" required>
                 </div>
                 <br>
             {% endfor %}

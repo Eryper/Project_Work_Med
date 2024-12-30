@@ -60,19 +60,25 @@ def inserimento_limiti():
 
 @app.route('/submit_limiti', methods=['POST'])
 def submit_limiti():
-    pressa = request.form['pressa']
-    tag_stampo = request.form['tag_stampo']
-    part_number = request.form['part_number']
-    ordine = request.form['ordine']
+    pressa = request.form['Pressa']
+    tag_stampo = request.form['Tag_stampo']
+    part_number = request.form['Part_number']
+    ordine = request.form['Ordine']
 
     parametri = request.form.getlist('parametro')
     
+    print(f"Pressa: {pressa}, Tag Stampo: {tag_stampo}, Part Number: {part_number}, Ordine: {ordine}")
+    print(f"Parametri: {parametri}")
+
+
     for parametro in parametri:
         limite_inf = request.form[f"limite_inf_{parametro}"]
         limite_sup = request.form[f"limite_sup_{parametro}"]
         
+        print(f"Parametro: {parametro}, Limite Inferiore: {limite_inf}, Limite Superiore: {limite_sup}")
+
         query = """
-        INSERT INTO limiti (Pressa, Tag_stampo, Part_number, Ordine, Parametro, Limite_inf, Limite_sup)
+        INSERT INTO Limiti (Pressa, Tag_stampo, Part_number, Ordine, Parametro, Limite_inf, Limite_sup)
         VALUES (?, ?, ?, ?, ?, ?, ?)
         """
         values = (pressa, tag_stampo, part_number, ordine, parametro, limite_inf, limite_sup)
