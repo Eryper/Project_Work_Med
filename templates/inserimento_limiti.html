@@ -30,32 +30,25 @@
                             <h5 class="card-title">{{ parametro[0] }}</h>
                             <input type="hidden" name="Parametro" value="{{ parametro[0] }}">
                             <p class="card-text">Limite Inferiore</p>
-                            <input type="number" name="Limite_inf{{ parametro[0] }}" class="btn btn-secondary" required>
+                            <input type="number" name="Limite_inf{{ parametro[0] }}" 
+                                class="btn btn-secondary" 
+                                value="{{ limiti_dict.get(parametro[0], {}).get('inf', '') }}" 
+                                required>
                             <p class="card-text">Limite Superiore</p>
-                            <input type="number" name="Limite_sup{{ parametro[0] }}" class="btn btn-secondary" required>
+                            <input type="number" name="Limite_sup{{ parametro[0] }}" 
+                                class="btn btn-secondary" 
+                                value="{{ limiti_dict.get(parametro[0], {}).get('sup', '') }}" 
+                                required>
                         </div>
                         </div>
                     </div>
-                {% endfor %}
-
-                        
-                    
+                {% endfor %}  
                 <button class="btn btn-primary floating-button" type="submit" >Invia limiti</button>
             </div>
         </section>
-        </form>
-        
-    </div>
-    <script>
-        const container = document.querySelector('.container');
-        const numberOfFields = Math.floor(Math.random() * 4) + 3; // Genera da 3 a 6 campi
-      
-        for (let i = 0; i < numberOfFields; i++) {
-          const input = document.createElement('.card_limiti');
-
-
-          container.appendChild(card_limiti);
-        }
-      </script>
+        </form>      
+    </div> 
 </body>
 </html>
+
+
