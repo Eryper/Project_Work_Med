@@ -113,6 +113,7 @@ def inserimento_limiti():
 
 @app.route('/submit_limiti', methods=['POST'])
 def submit_limiti():
+    
     conn = sqlite3.connect('DatabaseSql/MTD.db')
     cursor = conn.cursor()
 
@@ -189,11 +190,12 @@ def submit_limiti():
 
 @app.route('/grafici', methods=['GET'])
 def grafici():
-    pressa = str(request.args.get('codice_pressa'))
-    tag_stampo = str(request.args.get('TAG_stampo'))
+    pressa = request.args.get('pressa')
+    tag_stampo = request.args.get('tag_stampo')
     part_number = str(request.args.get('part_number'))
     ordine = str(request.args.get('ordine'))
     print("dati 3",pressa, tag_stampo, part_number, ordine)
+    print(request.args)
     # Recupera i limiti dalla richiesta
     limite_inf = request.args.getlist('limite_inf', type=float)  # Limiti inferiori
     limite_sup = request.args.getlist('limite_sup', type=float)  # Limiti superiori
@@ -276,7 +278,12 @@ def grafici():
         graphs.append(graph_html)
 
     # Passa i grafici come variabili al template
-    return render_template('grafici.html', graphs=graphs, pressa=pressa, tag_stampo=tag_stampo, part_number=part_number, ordine=ordine)
+    return render_template('grafici.html', 
+                           graphs=graphs, 
+                           pressa=pressa, 
+                           tag_stampo=tag_stampo, 
+                           part_number=part_number, 
+                           ordine=ordine)
 
 
 
