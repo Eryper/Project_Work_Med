@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const pressaInput = document.getElementById("codice_pressa_input");
   const tagStampoInput = document.getElementById("TAG_stampo_input");
   const partNumberInput = document.getElementById("part_number_input");
-
   const ordineDatalist = document.getElementById("ordine");
 
   // Funzione per aggiornare il datalist degli ordini

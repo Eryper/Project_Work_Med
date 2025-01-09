@@ -60,6 +60,18 @@
     // Aggiungi evento di focus
     input4.addEventListener('focus', function () {
         input4.setAttribute('list', 'ordine'); // Mostra le opzioni esistenti
+        // Trova l'elemento datalist esistente (se esiste)
+        var datalist = document.getElementById('ordine');
+    
+        // Crea un nuovo elemento option "Tutti" se non è già presente
+        var optionTutti = document.querySelector('#ordine option[value="Tutti"]');
+        
+        if (!optionTutti) {
+            optionTutti = document.createElement('option');
+            optionTutti.value = 'Tutti';
+            optionTutti.textContent = 'Tutti';
+            datalist.appendChild(optionTutti);
+        }
     });
 
     // Aggiungi evento per rendere il campo editabile

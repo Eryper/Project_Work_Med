@@ -26,6 +26,7 @@
                                 <p class="card-text">Cerca e seleziona il codice della pressa desiderato</p>
 
                                 <input  name="codice_pressa"  id="codice_pressa_input" class="btn btn-secondary" required >
+                                
                                 <datalist id="codice_pressa">
                                     {% for item in data_pressa %}
                                         <option value="{{ item[0] }}">{{ item[0] }}</option>
@@ -78,8 +79,9 @@
                             <div class="card-body">
                                 <h5 class="card-title">Ordine</h5>
                                 <p class="card-text">Cerca e seleziona il codice del ordine desiderato</p>
+
+                                <input name="ordine" id="ordine_input" class="btn btn-secondary" >
                                 
-                                <input name="ordine" id="ordine_input" class="btn btn-secondary">
                                 <datalist id="ordine" >
                                     {% for item in data_ordine %}
                                         <option value="{{ item[0] }}">{{ item[0] }}</option>
@@ -101,6 +103,10 @@
     <script src="{{ url_for('static', filename='js/script1.js') }}"></script>
     <!-- script per filtrare la quarta datalist basandosi sulle prime tre-->
     <script src="{{ url_for('static', filename='js/script2.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/script3.js') }}"></script>
+    
+    <script src="{{ url_for('static', filename='js/script4.js') }}"></script>
     <!-- Script di Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
