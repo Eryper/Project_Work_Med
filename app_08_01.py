@@ -204,7 +204,7 @@ def submit_limiti():
     tag_stampo = request.form['TAG_stampo']
     part_number = request.form['part_number']
     ordine = request.form['ordine']
-    orders = request.form['orders']
+    orders = request.form['ordine']
     # Stampa tutti i dati inviati
     print("Dati 2", request.form)
     
