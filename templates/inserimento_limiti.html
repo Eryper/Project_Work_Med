@@ -8,47 +8,56 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_boots.css') }}">
 </head>
 <body>
-    
-    <div class="container">
-        <h1 class="custom-heading">Inserisci i limiti per i parametri</h1>
+    <h1 class="custom-heading text-center">Inserisci i limiti per i parametri</h1>
 
-        <section class="row">
-            
-                
-                    
-                    <form method="POST" action="{{ url_for('submit_limiti') }}">
-                    <!-- Passa i 4 codici come hidden inputs -->
-                    <input type="hidden" name="codice_pressa" value="{{ pressa }}">
-                    <input type="hidden" name="TAG_stampo" value="{{ tag_stampo }}">
-                    <input type="hidden" name="part_number" value="{{ part_number }}">
-                    <input type="hidden" name="ordine" value="{{ ordine }}">
+    <section class="parametri-container">
+        <form method="POST" action="{{ url_for('submit_limiti') }}">
+            <!-- Passa i 4 codici come hidden inputs -->
+            <input type="hidden" name="codice_pressa" value="{{ pressa }}">
+            <input type="hidden" name="TAG_stampo" value="{{ tag_stampo }}">
+            <input type="hidden" name="part_number" value="{{ part_number }}">
+            <input type="hidden" name="ordine" value="{{ ordine }}">
 
-                    {% for parametro in parametri %}
-                    <div class="form-row">
-                        <div class="col-md-12 custom-card">
-                        <div class="card_limiti">
-                            <h5 class="card-title">{{ parametro[0] }}</h>
-                            <input type="hidden" name="Parametro" value="{{ parametro[0] }}">
-                            <p class="card-text">Limite Inferiore</p>
-                            <input type="number" name="Limite_inf{{ parametro[0] }}" 
-                                class="btn btn-secondary" 
-                                value="{{ limiti_dict.get(parametro[0], {}).get('inf', '') }}" 
-                                required>
-                            <p class="card-text">Limite Superiore</p>
-                            <input type="number" name="Limite_sup{{ parametro[0] }}" 
-                                class="btn btn-secondary" 
-                                value="{{ limiti_dict.get(parametro[0], {}).get('sup', '') }}" 
-                                required>
-                        </div>
+            {% for parametro in parametri %}
+                <div class="card_limiti">
+                    <div class="custom-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ parametro[0] }}</h5>
+                                <input type="hidden" name="Parametro" value="{{ parametro[0] }}">
+
+                                <!-- Card per i limiti -->
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <p class="card-text">Limite Inferiore</p>
+                                        <input type="number" name="Limite_inf{{ parametro[0] }}" 
+                                            class="btn btn-secondary" 
+                                            value="{{ limiti_dict.get(parametro[0], {}).get('inf', '') }}" 
+                                            required>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <p class="card-text">Limite Superiore</p>
+                                        <input type="number" name="Limite_sup{{ parametro[0] }}" 
+                                            class="btn btn-secondary" 
+                                            value="{{ limiti_dict.get(parametro[0], {}).get('sup', '') }}" 
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                {% endfor %}  
-                <button class="btn btn-primary floating-button" type="submit" >Invia limiti</button>
+                </div>
+            {% endfor %}
+
+            <div class="text-center">
+                <button class="btn btn-primary floating-button" type="submit">Invia limiti</button>
             </div>
-        </section>
         </form>      
-    </div> 
+    </section>
 </body>
 </html>
+
+
+
 
 
