@@ -63,7 +63,6 @@ cursor.execute(f"""
 cursor.execute(f"""
         CREATE TABLE IF NOT EXISTS Limiti (
         id_limiti INTEGER PRIMARY KEY,
-        Ordine TEXT,
         Pressa TEXT,
         Tag_stampo TEXT,
         Part_number TEXT,

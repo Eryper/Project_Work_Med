@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles_boots.css') }}">
 </head>
 <body>
+    
     <h1 class="custom-heading text-center">Inserisci i limiti per i parametri</h1>
 
     <section class="parametri-container">
@@ -50,10 +51,11 @@
             {% endfor %}
 
             <div class="text-center">
-                <button class="btn btn-primary floating-button" type="submit">Invia limiti</button>
+                <button class="btn btn-primary floating-button" type="submit">Grafici</button>
             </div>
         </form>      
     </section>
+    <button class="btn btn-primary floating-button-left" onclick="window.location.href='/'">Indietro</button>
 </body>
 </html>
 

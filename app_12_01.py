@@ -93,10 +93,11 @@ def get_ordini_filtrati():
 
     # Query filtrata
     query = """
-        SELECT DISTINCT ordine
+        SELECT DISTINCT Ordini.ordine
         FROM Ordini
+        INNER JOIN Parametri ON Ordini.ordine = Parametri.ordine
         WHERE codice_pressa = ? AND TAG_Stampo = ? AND part_number = ?
-        ORDER BY ordine ASC
+        ORDER BY Ordini.ordine ASC
     """
     ordini = get_data_from_db(query, (pressa, tag_stampo, part_number))
 
@@ -122,6 +123,7 @@ def index():
                            data_part_number=data_part_number, 
                            data_ordine=data_ordine)
 
+
 @app.route('/inserimento_limiti', methods=['POST', 'GET'])
 def inserimento_limiti():
     pressa = request.form.get('codice_pressa')
@@ -132,10 +134,11 @@ def inserimento_limiti():
     if ordine == 'Tutti': 
         # Query per ottenere tutti gli ordini
         query = """
-            SELECT DISTINCT ordine
+            SELECT DISTINCT Ordini.ordine
             FROM Ordini
+            INNER JOIN Parametri ON Ordini.ordine = Parametri.ordine
             WHERE codice_pressa = ? AND TAG_Stampo = ? AND part_number = ?
-            ORDER BY ordine ASC
+            ORDER BY Ordini.ordine ASC
         """
         ordini = get_data_from_db(query, (pressa, tag_stampo, part_number))
         
@@ -146,28 +149,32 @@ def inserimento_limiti():
         for multi_ordine in ordini:
             ordine_corrente = multi_ordine[0]
             
-            # Query per i parametri
+            # Query per i parametri, ordinati per nome parametro
             query_parametri = """
                 SELECT DISTINCT Parametro, U_M
                 FROM Ordini
                 JOIN Parametri ON Ordini.Ordine = Parametri.ordine
                 WHERE codice_pressa = ? AND TAG_Stampo = ? AND part_number = ? AND Ordini.ordine = ?
+                ORDER BY Parametro ASC
             """
             parametri = get_data_from_db(query_parametri, (pressa, tag_stampo, part_number, ordine_corrente))
             parametri_totali.extend(set(parametri))
             
-            # Query per i limiti
+            # Query per i limiti, ordinati per parametro
             query_limiti = """
                 SELECT DISTINCT Parametro, Limite_inf, Limite_sup
                 FROM Limiti
-                WHERE Pressa = ? AND Tag_stampo = ? AND Part_number = ? AND Ordine = ?
+                WHERE Pressa = ? AND Tag_stampo = ? AND Part_number = ?
+                ORDER BY Parametro ASC
             """
-            limiti = get_data_from_db(query_limiti, (pressa, tag_stampo, part_number, ordine_corrente))
+            limiti = get_data_from_db(query_limiti, (pressa, tag_stampo, part_number))
             limiti_totali.extend(set(limiti))
         
+        # Ordina i parametri e limiti
+        parametri_totali = sorted(set(parametri_totali), key=lambda x: x[0])
+        limiti_totali = sorted(set(limiti_totali), key=lambda x: x[0])
+        
         # Creazione del dizionario dei limiti
-        parametri_totali = set(parametri_totali)
-        limiti_totali= set(limiti_totali)
         limiti_dict = {limite[0]: {'inf': limite[1], 'sup': limite[2]} for limite in limiti_totali}
 
         # Passiamo la lista degli ordini, parametri e limiti al template
@@ -181,22 +188,24 @@ def inserimento_limiti():
             limiti_dict=limiti_dict
         )
     else:
-        # Recupera i parametri per un singolo ordine
+        # Recupera i parametri per un singolo ordine, ordinati per nome parametro
         query_parametri = """
             SELECT DISTINCT Parametro, U_M
             FROM Ordini
-            JOIN Parametri ON Ordini.Ordine = Parametri.ordine
+            INNER JOIN Parametri ON Ordini.Ordine = Parametri.ordine
             WHERE codice_pressa = ? AND TAG_Stampo = ? AND part_number = ? AND Ordini.ordine = ?
+            ORDER BY Parametro ASC
         """
         parametri = get_data_from_db(query_parametri, (pressa, tag_stampo, part_number, ordine))
 
-        # Recupera i limiti per un singolo ordine
+        # Recupera i limiti per un singolo ordine, ordinati per parametro
         query_limiti = """
             SELECT Parametro, Limite_inf, Limite_sup
             FROM Limiti
-            WHERE Pressa = ? AND Tag_stampo = ? AND Part_number = ? AND Ordine = ?
+            WHERE Pressa = ? AND Tag_stampo = ? AND Part_number = ?
+            ORDER BY Parametro ASC
         """
-        limiti_esistenti = get_data_from_db(query_limiti, (pressa, tag_stampo, part_number, ordine))
+        limiti_esistenti = get_data_from_db(query_limiti, (pressa, tag_stampo, part_number))
 
         # Creazione del dizionario dei limiti
         limiti_dict = {limite[0]: {'inf': limite[1], 'sup': limite[2]} for limite in limiti_esistenti}
@@ -211,6 +220,7 @@ def inserimento_limiti():
             parametri=parametri,
             limiti_dict=limiti_dict
         )
+
    
 
 @app.route('/submit_limiti', methods=['POST'])
@@ -222,7 +232,6 @@ def submit_limiti():
     pressa = request.form['codice_pressa']
     tag_stampo = request.form['TAG_stampo']
     part_number = request.form['part_number']
-    ordine = request.form['ordine']
     ordine = request.form['ordine']
     # Stampa tutti i dati inviati
     print("Dati 2", request.form)
@@ -255,8 +264,8 @@ def submit_limiti():
         # Verifica se esiste già il record
         cursor.execute("""
             SELECT 1 FROM limiti 
-            WHERE Ordine = ? AND Pressa = ? AND Tag_stampo = ? AND Part_number = ? AND Parametro = ?
-        """, (ordine, pressa, tag_stampo, part_number, parametro))
+            WHERE Pressa = ? AND Tag_stampo = ? AND Part_number = ? AND Parametro = ?
+        """, (pressa, tag_stampo, part_number, parametro))
 
         existing_record = cursor.fetchone()
 
@@ -266,14 +275,14 @@ def submit_limiti():
             cursor.execute(f"""
                 UPDATE Limiti
                 SET Limite_inf = {limite_inf}, Limite_sup = {limite_sup}
-                WHERE Ordine = ? AND Pressa = ? AND Tag_stampo = ? AND Part_number = ? AND Parametro = ?
-            """, (ordine, pressa, tag_stampo, part_number, parametro))
+                WHERE Pressa = ? AND Tag_stampo = ? AND Part_number = ? AND Parametro = ?
+            """, (pressa, tag_stampo, part_number, parametro))
         else:
             # Se non esiste, esegui un INSERT
             cursor.execute("""
-                INSERT INTO Limiti (Ordine, Pressa, Tag_stampo, Part_number, Parametro, Limite_inf, Limite_sup)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (ordine, pressa, tag_stampo, part_number, parametro, limite_inf, limite_sup))
+                INSERT INTO Limiti (Pressa, Tag_stampo, Part_number, Parametro, Limite_inf, Limite_sup)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (pressa, tag_stampo, part_number, parametro, limite_inf, limite_sup))
 
     print("Limiti salvati correttamente.")
     conn.commit()
@@ -296,13 +305,14 @@ def grafici():
     part_number = request.args.get('part_number')
     ordine = request.args.get('ordine')
 
-    print("dati 3",pressa, tag_stampo, part_number,ordine)
+    print("dati 3", pressa, tag_stampo, part_number, ordine)
     print(request.args)
+
     # Recupera i limiti dalla richiesta
     limite_inf = request.args.getlist('limite_inf', type=float)  # Limiti inferiori
     limite_sup = request.args.getlist('limite_sup', type=float)  # Limiti superiori
-   
-    # conversione di ordine da stringa a lista
+
+    # Conversione di ordine da stringa a lista
     value = ast.literal_eval(ordine)
     new_ordine = []
     if not isinstance(value, list):
@@ -311,9 +321,9 @@ def grafici():
         new_ordine = value
     placeholders = ', '.join(['?'] * len(new_ordine))
 
-    # Query per ottenere parametri, valori e timestamp dinamica che definisce il numero dei placeholder in base al numero di elementi della lista ordine
+    # Query aggiornata per includere anche Ordine e Unità di misura
     query = f"""
-            SELECT Parametro, Valore, Ora 
+            SELECT Parametro, Valore, Ora, Ordine, U_M 
             FROM Parametri 
             WHERE ordine IN ({placeholders}) 
             ORDER BY Parametro ASC
@@ -323,18 +333,16 @@ def grafici():
     # Prepara i dati per il grafico
     parametri = {}
     for row in results:
-        parametro,valore, ora = row
+        parametro, valore, ora, ordine_val, units_val = row
         if parametro not in parametri:
-            parametri[parametro] = {'x': [], 'y': [], 'limite_inf': None, 'limite_sup': None}
+            parametri[parametro] = {'x': [], 'y': [], 'limite_inf': None, 'limite_sup': None, 'ordini': [], 'units': []}
         parametri[parametro]['x'].append(ora)  # Ora come x
-        #parametri[parametro]['x'].append(ordine)
         parametri[parametro]['y'].append(valore)  # Valore come y
+        parametri[parametro]['ordini'].append(ordine_val)  # Aggiungi il numero dell'ordine
+        parametri[parametro]['units'].append(units_val)  # Aggiungi l'unità di misura
 
     # Associa i limiti inferiore e superiore per ogni parametro
-    # Supponiamo che i limiti siano passati nell'ordine in cui sono stati inseriti
-    
     for i, parametro in enumerate(parametri):
-        # Associa il limite inferiore e superiore per ogni parametro
         if i < len(limite_inf):
                 parametri[parametro]['limite_inf'] = limite_inf[i]
         if i < len(limite_sup):
@@ -345,20 +353,60 @@ def grafici():
     for parametro, data in parametri.items():
         fig = go.Figure()
 
-        # Aggiungi il grafico dei dati come punti
+        # Punti normali
+        normal_x = [data['x'][i] for i in range(len(data['x'])) if data['y'][i] >= data['limite_inf'] and data['y'][i] <= data['limite_sup']]
+        normal_y = [data['y'][i] for i in range(len(data['y'])) if data['y'][i] >= data['limite_inf'] and data['y'][i] <= data['limite_sup']]
+        normal_ordini = [data['ordini'][i] for i in range(len(data['ordini'])) if data['y'][i] >= data['limite_inf'] and data['y'][i] <= data['limite_sup']]
+        normal_units = [data['units'][i] for i in range(len(data['units'])) if data['y'][i] >= data['limite_inf'] and data['y'][i] <= data['limite_sup']]
+
+        # Outliers (sopra il limite superiore o sotto il limite inferiore)
+        outlier_x = [data['x'][i] for i in range(len(data['x'])) if data['y'][i] < data['limite_inf'] or data['y'][i] > data['limite_sup']]
+        outlier_y = [data['y'][i] for i in range(len(data['y'])) if data['y'][i] < data['limite_inf'] or data['y'][i] > data['limite_sup']]
+        outlier_ordini = [data['ordini'][i] for i in range(len(data['ordini'])) if data['y'][i] < data['limite_inf'] or data['y'][i] > data['limite_sup']]
+        outlier_units = [data['units'][i] for i in range(len(data['units'])) if data['y'][i] < data['limite_inf'] or data['y'][i] > data['limite_sup']]
+
+        # Aggiungi i punti normali (in blu)
         fig.add_trace(go.Scatter(
-            x=data['x'],
-            y=data['y'],
+            x=normal_x,
+            y=normal_y,
             mode='markers',
-            name=parametro,
             marker=dict(
                 color='blue',
                 size=10,
                 line=dict(width=2, color='black')
-            )
+            ),
+            hovertemplate=(
+                'Timestamp: %{x|%d %b %Y, %H:%M:%S}<br>' +
+                'Valore: %{y} %{customdata[1]}<br>' +  # Mostra l'unità di misura
+                'Ordine: %{customdata[0]}<br>' +  # Mostra l'ordine
+                '<extra></extra>'  # Rimuove la barra informativa extra
+            ),
+            text=[parametro] * len(normal_x),
+            customdata=list(zip(normal_ordini, normal_units))  # Associare ordini e unità di misura come tuple
         ))
 
-        # Aggiungi le linee per i limiti inferiore e superiore, se esistono
+        # Aggiungi i punti outliers (in rosso, con simbolo X)
+        fig.add_trace(go.Scatter(
+            x=outlier_x,
+            y=outlier_y,
+            mode='markers',
+            marker=dict(
+                color='red',
+                size=12,
+                symbol='x',  # Utilizza la X per gli outliers
+                line=dict(width=2, color='black')
+            ),
+            hovertemplate=(
+                'Timestamp: %{x|%d %b %Y, %H:%M:%S}<br>' +
+                'Valore: %{y} %{customdata[1]}<br>' +  # Mostra l'unità di misura
+                'Ordine: %{customdata[0]}<br>' +  # Mostra l'ordine
+                '<extra></extra>'  # Rimuove la barra informativa extra
+            ),
+            text=[parametro] * len(outlier_x),
+            customdata=list(zip(outlier_ordini, outlier_units))  # Associare ordini e unità di misura come tuple
+        ))
+
+        # Aggiungi le linee per i limiti inferiore e superiore
         if data['limite_inf'] is not None:
             fig.add_shape(
                 type="line", 
@@ -375,7 +423,7 @@ def grafici():
                 x1=max(data['x']), 
                 y0=data['limite_sup'],  # Usa il limite per il parametro specifico
                 y1=data['limite_sup'],
-                line=dict(color="green", dash="dash")
+                line=dict(color="red", dash="dash")
             )
 
         # Aggiorna layout con titoli e assi
@@ -391,12 +439,15 @@ def grafici():
 
     # Passa i grafici come variabili al template
     return render_template('grafici.html', 
-                           graphs=graphs, 
-                           pressa=pressa, 
-                           tag_stampo=tag_stampo, 
-                           part_number=part_number, 
-                           ordine=ordine
-                           )
+                        graphs=graphs, 
+                        pressa=pressa, 
+                        tag_stampo=tag_stampo, 
+                        part_number=part_number, 
+                        ordine=ordine)
+
+
+
+
 
 
 
