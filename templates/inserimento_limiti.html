@@ -31,14 +31,14 @@
                                 <div class="row">
                                     <div class="col-6 mb-3">
                                         <p class="card-text">Limite Inferiore</p>
-                                        <input type="number" name="Limite_inf{{ parametro[0] }}" 
+                                        <input type="float" name="Limite_inf{{ parametro[0] }}" 
                                             class="btn btn-secondary" 
                                             value="{{ limiti_dict.get(parametro[0], {}).get('inf', '') }}" 
                                             required>
                                     </div>
                                     <div class="col-6 mb-3">
                                         <p class="card-text">Limite Superiore</p>
-                                        <input type="number" name="Limite_sup{{ parametro[0] }}" 
+                                        <input type="float" name="Limite_sup{{ parametro[0] }}" 
                                             class="btn btn-secondary" 
                                             value="{{ limiti_dict.get(parametro[0], {}).get('sup', '') }}" 
                                             required>
@@ -55,7 +55,7 @@
             </div>
         </form>      
     </section>
-    <button class="btn btn-primary floating-button-left" onclick="window.location.href='/'">Indietro</button>
+    <button class="btn btn-primary floating-button-left" onclick="history.back()">Indietro</button>
 </body>
 </html>
 

@@ -19,20 +19,26 @@
     margin-top: 50px; /* Distanza dal bordo superiore della pagina */
 }
 
-
 /* Impostazione della larghezza massima delle card dei parametri */
 .card_limiti {
-    width: 90%;
+    width: 100%;
     max-width: 600px; /* Limite massimo di larghezza */
     margin: 0 auto; /* Centra il contenitore */
     margin-bottom: 30px; /* Aggiungi margine tra le card */
     box-sizing: border-box;
 }
 
-/* Regola la larghezza degli input per i limiti */
-.card_limiti input[type="number"] {
-    width: 48%; /* Imposta larghezza del 48% per avere 2 input affiancati */
-    margin-right: 4%; /* Spazio tra i due input */
+/* Modifica per centrare gli input e distanziarli orizzontalmente */
+.card_limiti .row {
+    display: flex;
+    justify-content: space-between; /* Dispone gli input orizzontalmente con spazio tra di loro */
+    align-items: center; /* Centra verticalmente gli input */
+}
+
+/* Impostiamo una larghezza del 48% per ciascun input, in modo che siano affiancati */
+.card_limiti input[type="float"] {
+    width: 100%; /* Imposta la larghezza al 48% per entrambi gli input */
+    margin: 0; /* Rimuove margini extra */
 }
 
 /* Aggiungi spazio tra i campi parametro */
@@ -107,8 +113,7 @@
     transform: scale(1.1);
 }
 
-
-
+/* Pulsanti secondari */
 .btn-secondary {
     height: 40px;
     padding: 10px;
@@ -130,7 +135,7 @@
         width: 100%; /* Occupa tutta la larghezza su schermi più piccoli */
     }
 
-    .card_limiti input[type="number"] {
+    .card_limiti input[type="float"] {
         width: 100%; /* Gli input occupano tutta la larghezza disponibile */
         margin-right: 0; /* Rimuovi lo spazio tra gli input */
     }
@@ -138,8 +143,8 @@
 
 .form-row {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 20px;
+    margin-bottom: 8px;
 }
 
 * {
@@ -147,5 +152,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+
 
 
