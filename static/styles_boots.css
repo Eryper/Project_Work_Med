@@ -1,10 +1,23 @@
-/* Stile personalizzato per l'intestazione (mantenuto invariato come prima) */
+/* Stile personalizzato per l'intestazione */
 .custom-heading {
     font-size: 3rem;
     color: #007bff; /* Colore principale di Bootstrap */
     font-family: 'Arial', sans-serif;
     text-transform: uppercase;
+    text-align: center;
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100px; /* Imposta un'altezza fissa per il contenitore del titolo */
+    margin: 0;
 }
+
+/* Modifica generale per il contenitore del titolo in tutte le pagine */
+h1.custom-heading {
+    margin: 0;
+    padding: 0;
+}
+
 
 /* Spazio tra i campi dei parametri */
 .parametri-container {
