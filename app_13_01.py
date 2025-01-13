@@ -108,20 +108,12 @@ def get_ordini_filtrati():
 @app.route('/', methods=['GET'])
 def index():
     query_pressa = "SELECT DISTINCT codice_pressa FROM Ordini ORDER BY codice_pressa DESC"
-    query_tag_stampo = "SELECT DISTINCT TAG_Stampo FROM Ordini ORDER BY codice_pressa DESC"
-    query_part_number = "SELECT DISTINCT part_number FROM Ordini ORDER BY codice_pressa DESC"
-    query_ordine = "SELECT DISTINCT ordine FROM Ordini ORDER BY codice_pressa DESC"
 
     data_pressa = get_data_from_db(query_pressa)
-    data_tag_stampo = get_data_from_db(query_tag_stampo)
-    data_part_number = get_data_from_db(query_part_number)
-    data_ordine = get_data_from_db(query_ordine)
 
     return render_template('selezione_codici_definitivo.html', 
-                           data_pressa=data_pressa, 
-                           data_tag_stampo=data_tag_stampo, 
-                           data_part_number=data_part_number, 
-                           data_ordine=data_ordine)
+                           data_pressa=data_pressa
+                           )
 
 
 @app.route('/inserimento_limiti', methods=['POST', 'GET'])
