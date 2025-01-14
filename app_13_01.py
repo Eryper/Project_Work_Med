@@ -420,9 +420,18 @@ def grafici():
 
         # Aggiorna layout con titoli e assi
         fig.update_layout(
-            title=f'Grafico per {parametro}',
-            xaxis_title='Tempo',
-            yaxis_title='Valore'
+            title=f'{parametro}',
+            title_font=dict(color='black',family='Arial', size=20, weight='bold'),
+             xaxis=dict(
+                title='Tempo',
+                title_font=dict(color='black', weight='bold'),  # Colore dell'etichetta asse X in nero
+                tickfont=dict(color='black')  # Colore delle etichette dell'asse X in nero
+            ),
+            yaxis=dict(
+                title='Valore',
+                title_font=dict(color='black', weight='bold'),  # Colore dell'etichetta asse Y in nero
+                tickfont=dict(color='black')  # Colore delle etichette dell'asse Y in nero
+            )
         )
 
         # Converte la figura in HTML e la aggiungi alla lista dei grafici

@@ -18,6 +18,12 @@ h1.custom-heading {
     padding: 0;
 }
 
+.subtitle {
+    padding-top: 30px;    /* Aggiungi spazio sopra */
+    padding-left: 25px;   /* Aggiungi spazio a sinistra */
+    font-size: 25;    /* Modifica la dimensione del font */
+    margin-top: -40px;
+}
 
 /* Spazio tra i campi dei parametri */
 .parametri-container {
@@ -29,7 +35,7 @@ h1.custom-heading {
     padding: 20px;
     width: 100%;
     height: 100vh;
-    margin-top: 50px; /* Distanza dal bordo superiore della pagina */
+    margin-top: -20px; /* Distanza dal bordo superiore della pagina */
 }
 
 /* Impostazione della larghezza massima delle card dei parametri */
@@ -37,7 +43,7 @@ h1.custom-heading {
     width: 100%;
     max-width: 600px; /* Limite massimo di larghezza */
     margin: 0 auto; /* Centra il contenitore */
-    margin-bottom: 30px; /* Aggiungi margine tra le card */
+    margin-bottom: 9px; /* Aggiungi margine tra le card */
     box-sizing: border-box;
 }
 
@@ -61,15 +67,15 @@ h1.custom-heading {
 
 /* Modifica delle card dei limiti */
 .custom-card .card {
-    flex: 1 1 calc(50% - 20px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Allinea gli elementi in modo uniforme */
+    height: 100%; /* Rende la card alta quanto necessario */
     box-sizing: border-box;
     padding: 20px;
     border: 2px solid #007bff;
     border-radius: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 /* Hover effect per le card */
@@ -121,6 +127,7 @@ h1.custom-heading {
     transition: all 0.3s ease-in-out;
 }
 
+
 .floating-button-left:hover {
     background-color: #004085; 
     transform: scale(1.1);
@@ -144,27 +151,67 @@ h1.custom-heading {
 
 /* Gestisci il layout in piccoli schermi */
 @media (max-width: 768px) {
-    .card_limiti {
-        width: 100%; /* Occupa tutta la larghezza su schermi più piccoli */
+    .form-row {
+        flex-direction: column; /* Disporre le righe in verticale su schermi piccoli */
+        gap: 15px;
     }
 
-    .card_limiti input[type="float"] {
+    .custom-card {
+        flex: 1 1 100%; /* Le card occuperanno tutta la larghezza disponibile */
+    }
+
+    .custom-card .card-body input {
         width: 100%; /* Gli input occupano tutta la larghezza disponibile */
-        margin-right: 0; /* Rimuovi lo spazio tra gli input */
     }
 }
 
+/* Allineamento della riga e delle colonne */
 .form-row {
     display: flex;
+    justify-content: space-between; /* Spazio uguale tra le colonne */
     gap: 20px;
-    margin-bottom: 9px;
+    margin-bottom: 8px; /* Distanza tra le righe */
 }
 
-* {
-    margin: 0;
-    padding: 0;
+.custom-card .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Allinea gli elementi in modo uniforme */
+    height: 100%; /* Rende la card alta quanto necessario */
     box-sizing: border-box;
+    padding: 20px;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* Assicurati che gli input siano larghi al 100% della loro card */
+.custom-card .card-body input {
+    width: 100%; /* Imposta la larghezza dell'input al 100% */
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.custom-card .card-body input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Stile per il titolo delle card */
+.custom-card .card-body .card-title {
+    margin-bottom: 15px; /* Aggiungi spazio tra il titolo e il contenuto */
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Hover effect per le card */
+.custom-card .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
 
 
 
