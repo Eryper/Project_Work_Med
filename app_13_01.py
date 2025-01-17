@@ -37,7 +37,7 @@ def get_limiti_combinazione(pressa, tag_stampo, part_number, ordine):
 
 def get_Tag_stampo_filtrati():
     # Recupera i parametri dalla richiesta GET
-    pressa = request.args.get('filtro0')
+    pressa = request.args.get('filtro1')
 
 
     # Verifica che i parametri siano presenti
@@ -59,8 +59,8 @@ def get_Tag_stampo_filtrati():
 
 def get_part_number_filtrati():
     # Recupera i parametri dalla richiesta GET
-    pressa = request.args.get('filtro4')
-    tag_stampo = request.args.get('filtro5')
+    pressa = request.args.get('filtro1')
+    tag_stampo = request.args.get('filtro2')
 
 
     # Verifica che i parametri siano presenti
@@ -321,7 +321,15 @@ def grafici():
             ORDER BY Parametro ASC
         """
     results = get_data_from_db(query, tuple(new_ordine))
-
+    
+    query_bom = f"""
+                SELECT DISTINCT item_figlio, descrizione_figlio
+                FROM BOM
+                WHERE ordine IN ({placeholders}) 
+                
+            """
+    Result_Bom = get_data_from_db(query_bom, tuple(new_ordine))
+    print("Risultati:", Result_Bom)
     # Prepara i dati per il grafico
     parametri = {}
     for row in results:
