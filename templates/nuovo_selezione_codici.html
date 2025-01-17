@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selezione Codici</title>
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Collegamento al file CSS personalizzato -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_boots.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="text-center py-5">
+            <h1 class="custom-heading">Selezione dei codici</h1>
+            <p class="lead custom-paragraph">Questa è la pagina di selezione dei codici</p>
+        </header>
+        <form action="/inserimento_limiti" method="post">
+        <section class="row">
+                <div class="form-row">
+                    <div class="col-md-6 custom-card">
+                        <div class="card">
+                        <div class="card-body">
+                        <h5 class="card-title">Pressa</h5>
+                        <p class="card-text">Cerca e seleziona il codice della pressa desiderato</p>
+                        <select id="codice_pressa_input" name="codice_pressa" class="form-select" style="width: 100%;">
+                            <option value="">Seleziona un codice pressa</option>
+                            {% for item in data_pressa %}
+                            <option value="{{ item[0] }}">{{ item[0] }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+                </div>
+                    </div>
+                    <div class="col-md-6 custom-card">
+                        <div class="card">
+                            <div class="card-body">
+                        <h5 class="card-title">Tag Stampo</h5>
+                        <p class="card-text">Cerca e seleziona il codice del tag_stampo desiderato</p>
+                        <select id="TAG_stampo_input" name="TAG_stampo" class="form-select" style="width: 100%;">
+                            <option value="">Seleziona un tag stampo</option>
+                            {% for item in data_tag_stampo %}
+                            <option value="{{ item[0] }}">{{ item[0] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-6 custom-card">
+                        <div class="card">
+                        <div class="card-body">
+                        <h5 class="card-title">Part Number</h5>
+                        <p class="card-text">Cerca e seleziona il codice del Part Number desiderato</p>
+                        <select name="part_number" id="part_number_input" class="form-select">
+                            <option value="">Seleziona un part number</option>
+                            {% for item in data_part_number %}
+                            <option value="{{ item[0] }}">{{ item[0] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6 custom-card">
+                        <div class="card">
+                        <div class="card-body">
+                        <h5 class="card-title">Ordine</h5>
+                        <p class="card-text">Cerca e seleziona il codice dell'ordine desiderato</p>
+                        
+                        <select name="ordine" id="ordine_input" class="form-select">
+                            
+                            <option value="" >Seleziona un ordine</option>
+                            {% for item in data_ordine %}
+                            <option value="{{ item[0] }}">{{ item[0] }}</option>
+                            {% endfor %}
+                            
+                        </select>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </form>  
+            <button class="btn btn-primary floating-button" type="submit">Invia</button>     
+        </section>
+    </div>
+
+   
+    <!-- script per filtrare la quarta datalist basandosi sulle prime tre-->
+    <script src="{{ url_for('static', filename='js/script2.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script3.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script4.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script_select.js') }}"></script>
+    <!-- Script di Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

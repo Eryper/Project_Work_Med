@@ -111,7 +111,7 @@ def index():
 
     data_pressa = get_data_from_db(query_pressa)
 
-    return render_template('selezione_codici_definitivo.html', 
+    return render_template('nuovo_selezione_codici.html', 
                            data_pressa=data_pressa
                            )
 

@@ -1,40 +1,66 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const pressaInput = document.getElementById("codice_pressa_input");
-    const tagStampoInput = document.getElementById("TAG_stampo_input");
-    const partNumberDatalist = document.getElementById("part_number");
-  
-    // Funzione per aggiornare il datalist degli ordini
-    function updatePartNumber() {
-        const pressa = pressaInput.value;
-        const tagStampo = tagStampoInput.value;
-        
-  
+    // Elementi di input
+    const pressaInput = $('#codice_pressa_input');
+    const tagStampoSelecet = $('#TAG_stampo_input');
+
+    
+
+    // Inizializzazione di select2 sui dropdown
+    pressaInput.select2({ placeholder: "Seleziona Pressa" });
+    tagStampoSelecet.select2({ placeholder: "Seleziona Tag Stampo" });
+
+    
+
+    // Funzione per aggiornare il dropdown degli ordini
+    function updateTagStampo() {
+        const pressa = pressaInput.val();  // Valore del dropdown Pressa
+
+     
+    
+        // Stampa per verificare i valori
+
+
+    
         // Controlla se tutti i campi necessari sono stati selezionati
-        if (pressa && tagStampo) {
-            // Esegui la richiesta al server
-            fetch(`/api/part_number?filtro4=${pressa}&filtro5=${tagStampo}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Svuota le opzioni esistenti
-                    partNumberDatalist.innerHTML = "";
-  
+        if (pressa ) {
+            // Esegui la richiesta AJAX per ottenere gli ordini
+            $.ajax({
+                url: '/api/Tag_stampo',
+                data: {
+                    filtro1: pressa,
+      
+                  
+                },
+                success: function(data) {
+                    // Svuota il select2 degli ordini
+                    tagStampoSelecet.empty();
+    
                     // Aggiungi nuove opzioni ricevute dal server
                     data.forEach(item => {
-                        const option = document.createElement("option");
-                        option.value = item.nome; // Usa il valore ricevuto dal server
-                        partNumberDatalist.appendChild(option);
+                        tagStampoSelecet.append(new Option(item.nome, item.id));
                     });
-                })
-                .catch(error => console.error("Errore durante il caricamento degli ordini:", error));
+    
+                    // Rende nuovamente attivo il Select2
+                    tagStampoSelecet.trigger('change');
+                },
+                error: function(error) {
+                    console.error("Errore durante il caricamento degli ordini:", error);
+                }
+            });
         } else {
-            // Svuota il datalist se mancano valori
-            partNumberDatalist.innerHTML = "";
+            // Svuota il select2 se mancano i valori
+            tagStampoSelecet.empty();
+            tagStampoSelecet.trigger('change');
+            
         }
     }
-  
-    // Aggiungi eventi di ascolto per i cambiamenti nei primi tre dropdown
-    pressaInput.addEventListener("change", updatePartNumber);
-    tagStampoInput.addEventListener("change", updatePartNumber);
+    
 
-  });
-  
+    // Aggiungi eventi di ascolto per i cambiamenti nei dropdown
+    pressaInput.on('change', updateTagStampo);
+
+   
+
+    // Caricamento iniziale degli ordini (nel caso i primi 3 siano già selezionati)
+    updateTagStampo();
+});
