@@ -52,19 +52,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 success: function(data) {
                     // Svuota il select2 degli ordini
                     ordineSelect.empty();
-
+                    ordineSelect.prop('disabled', true);
                     // Aggiungi un'opzione di "Tutti" come prima scelta
-                    if(data !=''){
+                    if(data ==''){
+                        
+                        ordineSelect.append(new Option("Nessun ordine corrispondente", "Nessun ordine corrispondente"));
+                    
+                    } else {
                         ordineSelect.append(new Option("Tutti", "Tutti"));
+   
+                        ordineSelect.prop('disabled', false); // Abilita il dropdown
+                        ordineSelect.trigger('change');
                     }
                     // Aggiungi nuove opzioni ricevute dal server
                     data.forEach(item => {
                         ordineSelect.append(new Option(item.nome, item.id));
                     });
 
-                    // Rende nuovamente attivo il Select2
-                    ordineSelect.prop('disabled', false); // Abilita il dropdown
-                    ordineSelect.trigger('change');
+
 
                     // Ferma l'animazione di caricamento
                     clearInterval(loadingInterval);
