@@ -54,8 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     ordineSelect.empty();
 
                     // Aggiungi un'opzione di "Tutti" come prima scelta
-                    ordineSelect.append(new Option("Tutti", "Tutti"));
-
+                    if(data !=''){
+                        ordineSelect.append(new Option("Tutti", "Tutti"));
+                    }
                     // Aggiungi nuove opzioni ricevute dal server
                     data.forEach(item => {
                         ordineSelect.append(new Option(item.nome, item.id));
