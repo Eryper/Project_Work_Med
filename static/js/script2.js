@@ -9,21 +9,38 @@ document.addEventListener("DOMContentLoaded", () => {
     pressaInput.select2({ placeholder: "Seleziona Pressa" });
     tagStampoInput.select2({ placeholder: "Seleziona Tag Stampo" });
     partNumberInput.select2({ placeholder: "Seleziona Part Number" });
-    ordineSelect.select2({ placeholder: "Seleziona Ordine" });
+    ordineSelect.select2({ placeholder: "Seleziona Ordine", allowClear: true });
+
+    // Variabile per tenere traccia dell'animazione di caricamento
+    let loadingInterval;
+    let loadingText = "Caricamento"; // Testo di base
 
     // Funzione per aggiornare il dropdown degli ordini
     function updateOrdine() {
         const pressa = pressaInput.val();  // Valore del dropdown Pressa
         const tagStampo = tagStampoInput.val();  // Valore del dropdown Tag Stampo
         const partNumber = partNumberInput.val();  // Valore del dropdown Part Number
-    
-        // Stampa per verificare i valori
-        console.log('Pressa:', pressa);
-        console.log('Tag Stampo:', tagStampo);
-        console.log('Part Number:', partNumber);
-    
-        // Controlla se tutti i campi necessari sono stati selezionati
+
+        // Verifica se i dati necessari sono selezionati
         if (pressa && tagStampo && partNumber) {
+            // Mostra un messaggio di caricamento con animazione dei punti
+            ordineSelect.prop('disabled', true);  // Disabilita il dropdown
+            ordineSelect.empty();  // Svuota le opzioni esistenti
+            ordineSelect.append(new Option(loadingText, "loading")); // Aggiungi "Caricamento." iniziale
+
+            // Inizia l'animazione dei punti
+            loadingInterval = setInterval(() => {
+                if (loadingText.length < 14) {
+                    loadingText += "."; // Aggiungi un punto
+                } else {
+                    loadingText = "Caricamento"; // Reset a "Caricamento" con 0 punti
+                }
+                // Aggiorna l'opzione di caricamento nel select
+                ordineSelect.empty();
+                ordineSelect.append(new Option(loadingText, "loading"));
+                ordineSelect.trigger('change');
+            }, 450); // Cambia ogni 500ms
+
             // Esegui la richiesta AJAX per ottenere gli ordini
             $.ajax({
                 url: '/api/ordine',
@@ -35,28 +52,36 @@ document.addEventListener("DOMContentLoaded", () => {
                 success: function(data) {
                     // Svuota il select2 degli ordini
                     ordineSelect.empty();
+
+                    // Aggiungi un'opzione di "Tutti" come prima scelta
                     ordineSelect.append(new Option("Tutti", "Tutti"));
+
                     // Aggiungi nuove opzioni ricevute dal server
                     data.forEach(item => {
                         ordineSelect.append(new Option(item.nome, item.id));
-                        
-                        
                     });
-    
+
                     // Rende nuovamente attivo il Select2
+                    ordineSelect.prop('disabled', false); // Abilita il dropdown
                     ordineSelect.trigger('change');
+
+                    // Ferma l'animazione di caricamento
+                    clearInterval(loadingInterval);
                 },
                 error: function(error) {
                     console.error("Errore durante il caricamento degli ordini:", error);
+                    ordineSelect.prop('disabled', false); // Abilita il dropdown anche in caso di errore
+
+                    // Ferma l'animazione di caricamento
+                    clearInterval(loadingInterval);
                 }
             });
         } else {
-            // Svuota il select2 se mancano i valori
+            // Se non ci sono selezioni, svuota il select2
             ordineSelect.empty();
             ordineSelect.trigger('change');
         }
     }
-    
 
     // Aggiungi eventi di ascolto per i cambiamenti nei dropdown
     pressaInput.on('change', updateOrdine);
@@ -66,3 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Caricamento iniziale degli ordini (nel caso i primi 3 siano già selezionati)
     updateOrdine();
 });
+
+
+
+
