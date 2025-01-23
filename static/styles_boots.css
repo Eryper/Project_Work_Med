@@ -1,3 +1,9 @@
+#logo {
+    width: 250px; /* Imposta la larghezza del logo */
+    height: auto; /* Mantiene le proporzioni */
+    margin: 10px; /* Distanza attorno al logo */
+  }
+
 /* Stile personalizzato per l'intestazione */
 .custom-heading {
     font-size: 3rem;
@@ -19,7 +25,7 @@ h1.custom-heading {
 }
 
 .subtitle {
-    padding-top: 30px;    /* Aggiungi spazio sopra */
+    padding-top: 35px;    /* Aggiungi spazio sopra */
     padding-left: 25px;   /* Aggiungi spazio a sinistra */
     font-size: 25;    /* Modifica la dimensione del font */
     margin-top: -40px;
