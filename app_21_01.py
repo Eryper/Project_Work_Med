@@ -32,7 +32,7 @@ def get_limiti_combinazione(pressa, tag_stampo, part_number, ordine):
     limiti = cursor.fetchall()
     conn.close()
     return limiti
-
+'''
 @app.route('/api/Tag_stampo', methods=['GET'])
 
 def get_Tag_stampo_filtrati():
@@ -78,7 +78,8 @@ def get_part_number_filtrati():
 
     # Restituisci i dati in formato JSON
     return jsonify([{"id": part_number[0], "nome": part_number[0]} for part_number in part_numbers])
-    
+
+'''       
 @app.route('/api/ordine', methods=['GET'])
 
 def get_ordini_filtrati():
@@ -104,15 +105,69 @@ def get_ordini_filtrati():
     # Restituisci i dati in formato JSON
     return jsonify([{"id": ordine[0], "nome": ordine[0]} for ordine in ordini])
 
+@app.route('/api/Tag_stampo', methods=['GET'])
+def get_tag_stampo():
+    pressa = request.args.get('filtro1')
+    part_number = request.args.get('filtro3')
+    query = "SELECT DISTINCT TAG_Stampo FROM Ordini WHERE 1=1"
+    params = []
+    if pressa:
+        query += " AND codice_pressa = ?"
+        params.append(pressa)
+    if part_number:
+        query += " AND part_number = ?"
+        params.append(part_number)
+    
+    results = get_data_from_db(query, params)
+    return jsonify([{"id": row[0], "nome": row[0]} for row in results])
+
+@app.route('/api/part_number', methods=['GET'])
+def get_part_number():
+    pressa = request.args.get('filtro1')
+    tag_stampo = request.args.get('filtro2')
+    query = "SELECT DISTINCT part_number FROM Ordini WHERE 1=1"
+    params = []
+    if pressa:
+        query += " AND codice_pressa = ?"
+        params.append(pressa)
+    if tag_stampo:
+        query += " AND TAG_Stampo = ?"
+        params.append(tag_stampo)
+    
+    results = get_data_from_db(query, params)
+    return jsonify([{"id": row[0], "nome": row[0]} for row in results])
+
+@app.route('/api/pressa', methods=['GET'])
+def get_pressa():
+    tag_stampo = request.args.get('filtro2')
+    part_number = request.args.get('filtro3')
+    query = "SELECT DISTINCT codice_pressa FROM Ordini WHERE 1=1"
+    params = []
+    if tag_stampo:
+        query += " AND TAG_Stampo = ?"
+        params.append(tag_stampo)
+    if part_number:
+        query += " AND part_number = ?"
+        params.append(part_number)
+    
+    results = get_data_from_db(query, params)
+    return jsonify([{"id": row[0], "nome": row[0]} for row in results])
+
 
 @app.route('/', methods=['GET'])
 def index():
     query_pressa = "SELECT DISTINCT codice_pressa FROM Ordini ORDER BY codice_pressa DESC"
+    query_tag_stampo = "SELECT DISTINCT TAG_Stampo FROM Ordini ORDER BY TAG_Stampo DESC"
+    query_part_number = "SELECT DISTINCT part_number FROM Ordini ORDER BY part_number DESC"
 
     data_pressa = get_data_from_db(query_pressa)
+    data_tag_stampo = get_data_from_db(query_tag_stampo)
+    data_part_number = get_data_from_db(query_part_number)
 
     return render_template('nuovo_selezione_codici.html', 
-                           data_pressa=data_pressa
+                           data_pressa=data_pressa,
+                           data_tag_stampo=data_tag_stampo,
+                           data_part_number=data_part_number
                            )
 
 
@@ -474,3 +529,4 @@ def grafici():
     
 if __name__ == '__main__':
     app.run(debug=True)
+    

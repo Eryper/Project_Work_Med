@@ -26,12 +26,12 @@
                 <div class="col-md-6 custom-card">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">PRESSA</h5>
-                            <p class="card-text">Cerca e seleziona il codice PRESSA desiderato</p>
+                            <h5 class="card-title">PART NUMBER</h5>
+                            <p class="card-text">Cerca e seleziona il codice PART NUMBER desiderato</p>
 
-                            <select name="codice_pressa" id="codice_pressa_input" class="form-select" style="width: 100%;" required>
-                                <option value="">Seleziona un codice pressa</option>
-                                {% for item in data_pressa %}
+                            <select name="part_number" id="part_number_input" class="form-select" style="width: 100%;">
+                                <option value="">Seleziona un part number</option>
+                                {% for item in data_part_number %}
                                     <option value="{{ item[0] }}">{{ item[0] }}</option>
                                 {% endfor %}
                             </select>
@@ -58,19 +58,18 @@
                 <div class="col-md-6 custom-card">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">PART NUMBER</h5>
-                            <p class="card-text">Cerca e seleziona il codice PART NUMBER desiderato</p>
+                            <h5 class="card-title">PRESSA</h5>
+                            <p class="card-text">Cerca e seleziona il codice PRESSA desiderato</p>
 
-                            <select name="part_number" id="part_number_input" class="form-select" style="width: 100%;">
-                                <option value="">Seleziona un part number</option>
-                                {% for item in data_part_number %}
+                            <select name="codice_pressa" id="codice_pressa_input" class="form-select" style="width: 100%;" required>
+                                <option value="">Seleziona un codice pressa</option>
+                                {% for item in data_pressa %}
                                     <option value="{{ item[0] }}">{{ item[0] }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-6 custom-card">
                     <div class="card">
                         <div class="card-body">
@@ -95,8 +94,7 @@
     <!-- script per filtrare la quarta datalist basandosi sulle prime tre-->
     
     <script src="{{ url_for('static', filename='js/script2.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/script3.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/script4.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script_select.js') }}"></script>
     <!-- Script per inizializzare Select2 -->
     <script>
