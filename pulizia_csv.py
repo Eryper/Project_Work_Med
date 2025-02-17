@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np  # Per NaN
 
-# Carica il CSV specificando il delimitatore corretto
+# Carica il CSV specificando il nome del file e il delimitatore corretto
 df = pd.read_csv('Parametri_Critici_Ordini copy.csv', encoding='latin1', sep=';', on_bad_lines="skip")
 
 # Funzione per separare il valore numerico e l'unità di misura o il simbolo percentuale
